@@ -47,7 +47,7 @@ void start_state(char *w_attempts, char *word)
 
 /**
  * Retorna a quantidade de ocorrências de uma
- * dada letra na strng word;
+ * dada letra na string word;
  * @param letter letra a ser verificada
  * @param word palavra que contém a possivel letra
  * */
@@ -231,6 +231,8 @@ int main(void)
   system("clear");
 
   //TODO Validar letras digitadas (aceitar, maisculas e minusculas).
+  //TODO As palavras já digitadas.
+  //TODO Dicas
   //TODO Impedir que o programa quebre caso digite dois caracteres seguidos. (validação da entrada).
   //TODO Permitir digitar a palavra completa caso já saiba.
   //TODO Recuperar palavras de um arquivo de forma aleatória.
@@ -238,7 +240,7 @@ int main(void)
 
 
   // strings: Original e de tentativas 
-  char word[] = "java e legal";
+  char word[] = "prefiro java mas tem que c";
   char w_attempts[strlen(word)];
 
   // Armazena a letra certa já digitada para não ter repetições
