@@ -256,22 +256,30 @@ int main(void)
   int times = 0;
 
   // Game loop
-  while(strcmp(w_attempts, word) != 0)
+  while(1)
   {
     system("clear");
  
     // Critério de derrota
     if(times == 6)
     {
-      draw_sticker(6);    
+      draw_sticker(6); // Desenha o sticker antes de sair do loop
+      break;
+    }
+
+    // Critério de vitória
+    if(strcmp(w_attempts, word) == 0)
+    {
+      draw_sticker(times); // Desenha o sticker no estado atual antes de sair do jogo
+      printf("Palavra: %s\n", w_attempts); // Mostra o último estado da palavra antes de sair do loop
       break;
     }
 
     // Desenha na tela 
     draw_sticker(times);    
+     
     printf("Palavra: %s\n", w_attempts);
     printf("Letra: ");
-
     scanf("%c", &letter);
     clbuffer();
 
@@ -281,14 +289,15 @@ int main(void)
     if(occurrences == 0)
     {
       times++;
-    }
+    } // Fim do if externo
     else
     {
       if(occurrences == 1)
       {
+        // Atualiza apenas uma letra na string de tentativas
         int p = one_position(letter, word);
         update_state(letter, p, w_attempts);
-      }
+      } // Fim do if interno
       else
       {
         // Vetor de posições
@@ -299,10 +308,10 @@ int main(void)
         for(int t = 0; t < occurrences; t++)
         {
           update_state(letter, v_positions[t], w_attempts);
-        }
-      }
-    }
-  }
+        } // Fim do for
+      } // Fim do else interno
+    } // Fim do else externo
+  } // Fim do Game loop
 
   return 0;
 }
