@@ -16,15 +16,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-
-/**
- * Método mais eficaz para limpar o buffer do teclado
- * */
-void clbuffer(void)
-{
-  char c = getchar();
-  while(c != '\0' && c != '\n' && c != EOF);
-}
+#include <locale.h>
 
 /*
  * Inicia o estado da palavra, atribuindo a ela
@@ -127,7 +119,7 @@ void update_state(char w, int position, char *w_attempts)
  * */
 void insert_buffer(char letter, char *buffer)
 {
-  // Variavel estática para manter o valor da posição mesmo fora do escopo da função 
+  // Variavel estática para manter o valor da posição mesmo fora do escopo da função.
   static int position = 0;
 
   buffer[position] = letter;
@@ -140,15 +132,16 @@ void insert_buffer(char letter, char *buffer)
       position--;
     }
   }
-
   position++;
   buffer[position] = '\0';
 }
 
+// Parametrização da função de desenhar na tela.
 void draw_sticker(int turn);
 
 int main(void)
 {
+  setlocale(LC_ALL, "Portuguese");
   system("clear");
 
   //TODO Dicas com base no arquivo da palavra sorteada
@@ -171,10 +164,9 @@ int main(void)
 
   // Contador de rodadas
   int round = 0;
+
   // Quantidade de vezes que errou
   int times = 0;
-
-  int victory = 0;
 
   // Game loop
   while(1)
@@ -192,7 +184,7 @@ int main(void)
     if(strcmp(w_attempts, word) == 0)
     {
       draw_sticker(times); // Desenha o sticker no estado atual antes de sair do jogo
-      printf("Palavra: %s\n", w_attempts); // Mostra o último estado da palavra antes de sair do loop
+      printf("Frase: %s\n", w_attempts); // Mostra o último estado da palavra antes de sair do loop
       break;
     }
 
@@ -202,15 +194,15 @@ int main(void)
     do
     {
       system("clear"); 
-      draw_sticker(times);    // Desenha na tela
+      draw_sticker(times); // Desenha na tela
 
       // Caso já tenha passado três rodadas aparece a informação
       if(round >= 3)
-        printf("\n* Para tentar a palavra digite: 1\n\n");
+        printf("\n* Para tentar a palavra completa digite: 1\n\n");
 
       printf("Letras digitadas: %s\n\n", letter_buffers);
 
-      printf("Palavra: %s\n", w_attempts);
+      printf("Frase: %s\n", w_attempts);
       printf("Letra: ");
       fgets(str_aux, strlen(word), stdin);
       
@@ -223,7 +215,7 @@ int main(void)
       // String que armazena o chute
       char kick[strlen(word)];
 
-      printf("Chutar Palavra: ");
+      printf("Chutar Frase: ");
       setbuf(stdin, NULL);
       fgets(kick, strlen(word) + 1, stdin);
 
@@ -232,7 +224,7 @@ int main(void)
       {
         system("clear");
         draw_sticker(times); // Desenha o sticker no estado atual antes de sair do jogo
-        printf("Palavra: %s\n", kick); // Mostra o último estado da palavra antes de sair do loop
+        printf("Frase: %s\n", kick); // Mostra o último estado da palavra antes de sair do loop
         getchar();
         break;
       }
@@ -283,14 +275,15 @@ int main(void)
 
       } // Fim do else interno
     } // Fim do else externo
-
   } // Fim do Game loop
 
   if(times == 6)
-    printf("Fim do jogo\n");
+    printf("\nPerdeu\n"); //TODO FAZER UMA FUNÇÃO COM A TELA DE DERROTA
   else
-    printf("Ganhou\n");
-  return 0;
+    printf("\nGanhou\n"); //TODO FAZER UMA FUNÇÃO COM A TELA DE VITÓRIA
+
+
+  return 0; //EXIT_ON_CLOSE
 }
 
 /*
@@ -399,5 +392,4 @@ void draw_sticker(int turn)
     break;
   }
 }
-
 
